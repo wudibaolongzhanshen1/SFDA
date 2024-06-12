@@ -65,9 +65,10 @@ class MyModel(nn.Module):
 class resnet50(nn.Module):
     def __init__(self,weights=ResNet50_Weights,num_classes=10):
         super(resnet50, self).__init__()
-        self.model = models.resnet50(weights=weights)
-        self.model.fc = nn.Linear(2048, num_classes)
+        self.feature_extractor = feature_extractor(weights=weights)
+        self.classifier = classifier_t(num_classes)
 
     def forward(self, x):
-        x = self.model(x)
+        x = self.feature_extractor(x)
+        x = self.classifier(x)
         return x
